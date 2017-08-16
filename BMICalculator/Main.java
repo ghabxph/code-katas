@@ -1,8 +1,9 @@
-import java.util.Scanner;
 
 /**
  * Startup class
- * @author  Gabriel Lucernas Pascual
+ * @author   Gabriel Lucernas Pascual
+ * @version  1.1
+ * @since    2017.08.15
  */
 public class Main
 {
@@ -17,38 +18,10 @@ public class Main
     {
         double height = getHeight();
         double weight = getWeight();
-        double bmi = getBMI(height, weight);
-        System.out.printf("Your BMI is %f\n", bmi);
-        displayInterpretations(bmi);
-        displayGoal(height);
-    }
-
-    /**
-     * Get input as Double double = new Double();
-     * @return Returns input of user as double
-     */
-    private static double getDouble()
-    {
-        try {
-            return new Scanner(System.in).nextDouble();
-        } catch (Exception e) {
-            System.out.print("Please enter a valid number: ");
-            return getDouble();
-        }
-    }
-
-    /**
-     * Get input as integer
-     * @return Returns the input of user as integer
-     */
-    private static int getInt()
-    {
-        try {
-            return new Scanner(System.in).nextInt();
-        } catch (Exception e) {
-            System.out.print("Please enter a valid integer: ");
-            return getInt();
-        }
+        BodyMassIndex bmi = new BodyMassIndex(height, weight);
+        System.out.printf("Your BMI is %f\n", bmi.getBMI());
+        displayInterpretations(bmi.getBMI());
+        displayGoal(bmi.getNormalWeightRange());
     }
 
     /**
@@ -62,7 +35,7 @@ public class Main
         System.out.println("    2. Feet by inches");
         System.out.println("    3. Exit application");
         System.out.print("Your choice: ");
-        int choice = getInt();
+        int choice = Input.getInt();
         if (choice == 1) {
             return getHeightAsCentimeter();
         } else if (choice == 2) {
@@ -83,7 +56,7 @@ public class Main
     private static double getHeightAsCentimeter()
     {
         System.out.print("Please enter the height in centimeters: ");
-        return getDouble() / 100;
+        return Input.getDouble() / 100;
     }
 
     /**
@@ -94,9 +67,9 @@ public class Main
     {
         System.out.println("Please enter the height as feet by inches.");
         System.out.print("Feet: ");
-        double feet = getDouble();
+        double feet = Input.getDouble();
         System.out.print("Inches: ");
-        double inches = getDouble();
+        double inches = Input.getDouble();
         return convertFeetByInchesToMeter(feet, inches);
     }
 
@@ -125,7 +98,7 @@ public class Main
         System.out.println("    2. Pounds");
         System.out.println("    3. Exit the program");
         System.out.print("Enter your choice: ");
-        int choice = getInt();
+        int choice = Input.getInt();
         if (choice == 1) {
             return getWeightAsKilogram();
         } else if (choice == 2) {
@@ -146,7 +119,7 @@ public class Main
     private static double getWeightAsKilogram()
     {
         System.out.print("Enter weight as kilogram: ");
-        return getDouble();
+        return Input.getDouble();
     }
 
     /**
@@ -156,7 +129,7 @@ public class Main
     private static double getWeightAsPound()
     {
         System.out.print("Enter weight as pound: ");
-        double pound = getDouble();
+        double pound = Input.getDouble();
         return pound / POUND_TO_KILOGRAM;
     }
 
@@ -169,26 +142,6 @@ public class Main
     private static double getBMI(double height, double weight)
     {
         return weight / (height * height);
-    }
-
-    /**
-     * Get lowest normal weight
-     * @param  height Height in meters
-     * @return        Returns the lowest normal weight
-     */
-    private static double getLowestNormalWeight(double height)
-    {
-        return height * height * 18.5;
-    }
-
-    /**
-     * Get highest normal weight
-     * @param  height Height in meters
-     * @return        Returns the highest normal weight
-     */
-    private static double getHighestNormalWeight(double height)
-    {
-        return height * height * 24.9;
     }
 
     /**
@@ -222,10 +175,10 @@ public class Main
      * Display the goal weight to become normal
      * @param height Height in meter
      */
-    private static void displayGoal(double height)
+    private static void displayGoal(DoubleRange range)
     {
         String output = "Your weight goal to have a normal weight is to get a weight in between ";
-        output += getLowestNormalWeight(height) + " to " + getHighestNormalWeight(height);
+        output += range.getMinimum() + " to " + range.getMaximum();
         System.out.println(output);
     }
 }
