@@ -29,7 +29,12 @@ public class Main
      */
     private static double getDouble()
     {
-        return new Scanner(System.in).nextDouble();
+        try {
+            return new Scanner(System.in).nextDouble();
+        } catch (Exception e) {
+            System.out.print("Please enter a valid number: ");
+            return getDouble();
+        }
     }
 
     /**
@@ -38,7 +43,12 @@ public class Main
      */
     private static int getInt()
     {
-        return new Scanner(System.in).nextInt();
+        try {
+            return new Scanner(System.in).nextInt();
+        } catch (Exception e) {
+            System.out.print("Please enter a valid integer: ");
+            return getInt();
+        }
     }
 
     /**
@@ -61,7 +71,7 @@ public class Main
             System.exit(0);
             return 0; // Unreachable statement. Yeah I know...
         } else {
-            System.out.println("Invalid input. Please try again!\n\n");
+            showInvalidInputMessage();
             return getHeight();
         }
     }
@@ -72,7 +82,7 @@ public class Main
      */
     private static double getHeightAsCentimeter()
     {
-        System.out.print("Please enter your height (in centimeters): ");
+        System.out.print("Please enter the height in centimeters: ");
         return getDouble() / 100;
     }
 
@@ -82,7 +92,7 @@ public class Main
      */
     private static double getHeightAsFeetByInches()
     {
-        System.out.println("Please enter your height as feet by inches.");
+        System.out.println("Please enter the height as feet by inches.");
         System.out.print("Feet: ");
         double feet = getDouble();
         System.out.print("Inches: ");
@@ -124,7 +134,7 @@ public class Main
             System.exit(0);
             return 0; // Unreachable statement. Yeah I know...
         } else {
-            System.out.println("Invalid input. Please try again!\n\n");
+            showInvalidInputMessage();
             return getWeight();
         }
     }
@@ -179,6 +189,14 @@ public class Main
     private static double getHighestNormalWeight(double height)
     {
         return height * height * 24.9;
+    }
+
+    /**
+     * Prints a message telling that the input is invalid
+     */
+    private static void showInvalidInputMessage()
+    {
+        System.out.println("\n\nInvalid input. Please try again!");
     }
 
     /**
